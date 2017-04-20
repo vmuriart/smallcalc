@@ -72,6 +72,19 @@ class CalcParser:
         t = self.lexer.get_token()
         return IntegerNode(t.value)
 
+    def parse_term(self):
+        left = self.parse_integer()
+
+        next_token = self.lexer.peek_token()
+
+        if next_token.type == clex.LITERAL:
+            operator = self.parse_addsymbol()
+            right = self.parse_term()
+
+            return BinaryNode(left, operator, right)
+        else:
+            return IntegerNode(left.value)
+
     def parse_expression(self):
         left = self.parse_integer()
 
